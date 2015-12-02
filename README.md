@@ -19,3 +19,8 @@ http://iaseteam.eshizuoka.jp/e1237677.html
 取得したそれぞれを
 search_insta.py
 に書き込む.
+
+```
+python search_insta.py
+```
+で実行
