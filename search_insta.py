@@ -14,8 +14,8 @@ ACCESS_TOKEN = ''
 OUTPUT_CSV = "download/images.csv"
 OUTPUT_IMAGE_DIR = "download/images"
 START = 0
-END = 120 # 30区切りで
-TAG_NAME = "apple"
+END = 30 # 30区切りで
+TAG_NAME = "渋谷"
 
 def clean_dir_csv():
     if os.path.exists(OUTPUT_CSV):
@@ -59,13 +59,14 @@ def instagram_search(max_id="", skip=0):
                     f.write(r.content)
                     f.close()
                     
-                    if media_id.location:
-                        latitude = media_id.location.latitude
-                        longitude = media_id.location.longitude
+                    if hasattr(media_id, "location"):
+                        latitude = media_id.location.point.latitude
+                        longitude = media_id.location.point.longitude
                         writer.writerow([thumb_url, file_name, latitude, longitude])
                     else:
-                        writer.writerow([thumb_url, file_name])
-            except Exception:
+                        writer.writerow([thumb_url, file_name, "", ""])
+                        
+            except Exception as e:
                 pass
             count += 1
         temp,max_tag_id = next.split("max_tag_id=")
