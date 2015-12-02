@@ -13,7 +13,7 @@ https://instagram.com/developer/ から
 を取得する.
 
 参考サイト
-http://www.dcrew.jp/ja-instagram-api-doc-v1/
+http://www.dcrew.jp/ja-instagram-api-doc-v1/,
 http://iaseteam.eshizuoka.jp/e1237677.html
 
 取得したそれぞれを
