@@ -43,7 +43,7 @@ def instagram_search(max_id="", skip=0):
     
     with open(OUTPUT_CSV, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=str(','), quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(['origin_url', 'file_name'])
+        writer.writerow(['origin_url', 'file_name', 'latitude', 'longitude'])
         count = 0 + skip
 
         for media_id in media_ids:
@@ -58,7 +58,13 @@ def instagram_search(max_id="", skip=0):
                     f = open(path,"wb")
                     f.write(r.content)
                     f.close()
-                    writer.writerow([thumb_url, file_name])
+                    
+                    if media_id.location:
+                        latitude = media_id.location.latitude
+                        longitude = media_id.location.longitude
+                        writer.writerow([thumb_url, file_name, latitude, longitude])
+                    else:
+                        writer.writerow([thumb_url, file_name])
             except Exception:
                 pass
             count += 1
