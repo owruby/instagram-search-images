@@ -13,11 +13,13 @@ ACCESS_TOKEN = ''
 
 OUTPUT_CSV = "download/images.csv"
 OUTPUT_IMAGE_DIR = "download/images"
-START = 0
-END = 30 # 30区切りで
 
-LAT = 35.681184078 # 緯度
-LNG = 139.764846082 # 軽度
+LIMIT = 90 # 1箇所に対しての画像枚数の制限
+
+LAT = 40.68975001664651  # 緯度
+LNG = -74.04029846191406 # 経度
+DISTANCE = 1000 # 緯度,経度を中心とした半径
+LOCATION_COUNT = 10 # 場所の取得数
 
 class InstagramCrawler:
 
@@ -26,9 +28,10 @@ class InstagramCrawler:
             access_token=ACCESS_TOKEN,
             client_id = CLIENT_ID,
             client_secret = CLIENT_SECRET)
-        clean_dir_csv()
+        self.clean_dir_csv()
+
     
-    def clean_dir_csv():
+    def clean_dir_csv(self):
         if os.path.exists(OUTPUT_CSV):
             os.remove(OUTPUT_CSV)
 
@@ -41,41 +44,57 @@ class InstagramCrawler:
 
 
     def search_instagram(self):
-        location_ids = self.__search_location_ids()
+        location_ids, location_lls = self.__search_location_ids()
         count = 1
-        
-        for location_id in location_ids:
-            media_ids,next = self.api.location_recent_media(
-                count = 30,
-                location_id = location_id)
+
+        for location_id,location_ll in zip(location_ids,location_lls):
+
+            max_id = ""
+            next = True
+            while(not next is None):
+                media_ids,next = self.api.location_recent_media(
+                    count = 30,
+                    location_id = location_id,
+                    max_id = max_id)
             
-            with open(OUTPUT_CSV, 'w') as csvfile:
-                writer = csv.writer(csvfile, delimiter=str(','), quoting=csv.QUOTE_MINIMAL)
-                writer.writerow(['origin_url', 'file_name', 'latitude', 'longitude'])
-                for media_id in media_ids:
-                    thumb_url = media_id.images['thumbnail'].url
-                    print "now %d downloading" % count
-                    try:
-                        r = requests.get(thumb_url)
-                        if r.status_code == 200:
-                            file_name = "%04d.jpg" % count
-                            path = "{0}/{1}".format(OUTPUT_IMAGE_DIR, file_name)
-                            f = open(path,"wb")
-                            f.write(r.content)
-                            f.close()
-                   
-                    except Exception as e:
-                        pass
-                    count += 1
+                with open(OUTPUT_CSV, 'w') as csvfile:
+                    writer = csv.writer(csvfile, delimiter=str(','), quoting=csv.QUOTE_MINIMAL)
+                    writer.writerow(['origin_url', 'file_name', 'latitude', 'longitude', 'location_id'])
+                    for media_id in media_ids:
+                        thumb_url = media_id.images['thumbnail'].url
+                        print "now %d downloading" % count
+                        try:
+                            r = requests.get(thumb_url)
+                            if r.status_code == 200:
+                                file_name = "%04d.jpg" % count
+                                path = "{0}/{1}".format(OUTPUT_IMAGE_DIR, file_name)
+                                f = open(path,"wb")
+                                f.write(r.content)
+                                f.close()
+                            
+                                writer.writerow([thumb_url, file_name, location_ll[0], location_ll[1], location_id])
+                             
+                        except Exception as e:
+                            pass
+
+                        if not next is None:
+                            temp, max_location_id = next.split("max_id=")
+                            max_id = str(max_location_id)
+
+                        count += 1
+                    
     
     def __search_location_ids(self):
         media_ids = self.api.location_search(
-            count = 50,
+            count = LOCATION_COUNT,
             lat = LAT,
             lng = LNG,
-            distance = 1000)
+            distance = DISTANCE)
 
-        return [media_id.id for media_id in media_ids]
+        return [
+            [media_id.id for media_id in media_ids],
+            [[media_id.point.latitude, media_id.point.longitude] for media_id in media_ids]]
+
 
 if __name__ == '__main__':
     crawler = InstagramCrawler()
