@@ -15,7 +15,7 @@ OUTPUT_CSV = "download/images.csv"
 OUTPUT_IMAGE_DIR = "download/images"
 START = 0
 END = 30 # 30区切りで
-TAG_NAME = "渋谷"
+TAG_NAME = "shibuya"
 
 def clean_dir_csv():
     if os.path.exists(OUTPUT_CSV):
@@ -58,7 +58,7 @@ def instagram_search(max_id="", skip=0):
                     f = open(path,"wb")
                     f.write(r.content)
                     f.close()
-                    
+
                     if hasattr(media_id, "location"):
                         latitude = media_id.location.point.latitude
                         longitude = media_id.location.point.longitude
