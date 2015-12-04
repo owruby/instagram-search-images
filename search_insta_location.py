@@ -18,7 +18,7 @@ LIMIT = 90 # 1箇所に対しての画像枚数の制限
 
 LAT = 40.68975001664651  # 緯度
 LNG = -74.04029846191406 # 経度
-DISTANCE = 1000 # 緯度,経度を中心とした半径
+DISTANCE = 1000 # 緯度,経度を中心とした半径(m)
 LOCATION_COUNT = 10 # 場所の取得数
 
 class InstagramCrawler:
