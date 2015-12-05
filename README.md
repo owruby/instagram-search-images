@@ -32,7 +32,7 @@ http://iaseteam.eshizuoka.jp/e1237677.html
 
 #### Usage
 1. 取得したclient_id,client_secret,access_tokenを```search_insta_tag.py``` に書き込む.
-2. ```TAG_NAME```の箇所に検索するタグ名を入力.
+2. ```TAG_NAME```の箇所に検索するタグ名を入力.```END```にダウンロードする画像枚数を設定.
 3. 
 ```
 python search_insta_tag.py
@@ -44,6 +44,12 @@ python search_insta_tag.py
 #### Description
 (緯度,経度)をもとに,その緯度,経度の周りの```location_id```を取得する.
 その取得した```location_id```をもとに検索する.
+images.csvには以下を記載
+* origin_url
+* file_name
+* latitude
+* longtitude
+* location_id
 
 #### Usage
 1. 取得したclient_id,client_secret,access_tokenを```search_insta_tag.py``` に書き込む.
