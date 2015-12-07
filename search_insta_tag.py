@@ -14,7 +14,7 @@ ACCESS_TOKEN = '1536083749.b6bf0a5.b67f844eda234d069442f99209aed2be'
 
 OUTPUT_CSV = "download/images.csv"
 OUTPUT_IMAGE_DIR = "download/images"
-OUTPUT_IMAGE320_DIR = "download/images_320"
+OUTPUT_IMAGE320_DIR = "download/images320"
 START = 0
 END = 30 # 30区切りで
 TAG_NAME = "shibuya"
