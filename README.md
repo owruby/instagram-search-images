@@ -61,3 +61,9 @@ http://maihamakyo.org/etc/locastagram/
 3.
 ``` python search_insta_location.py ```
 で実行
+
+## Notice
+```
+instagram.bind.InstagramClientError: (500) Unable to parse response, not valid JSON.
+```
+のようなエラーが発生するときがたまにあるが,気にせずもう１度実行.
