@@ -8,9 +8,9 @@ import csv
 import glob
 import codecs
 
-CLIENT_ID = ''
-CLIENT_SECRET = ''
-ACCESS_TOKEN = ''
+CLIENT_ID = 'b6bf0a570ee54c97b8a49748b0e574a1'
+CLIENT_SECRET = '40e8a61730c545aeab7f610650119d80'
+ACCESS_TOKEN = '1536083749.b6bf0a5.b67f844eda234d069442f99209aed2be'
 
 OUTPUT_CSV = "download/images.csv"
 OUTPUT_IMAGE_DIR = "download/images"
@@ -73,7 +73,7 @@ def instagram_search(max_id="", skip=0):
                     save_image(path, r2.content)
                     
                     tags = [tag.name for tag in media_id.tags]
-                    tags = unicode(','.join(tags)).encode('sjis')
+                    tags = unicode(','.join(tags)).encode('utf_8')
 
                     if hasattr(media_id, "location"):
                         latitude = media_id.location.point.latitude
